@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 07:59:39 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/08 09:54:56 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/12 16:51:11 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 
 	dx = x2 - x1;
 	dy = y2 - y1;
-	
-	if ((dx < 0 || dy < 0) && (dx != 0 && dy != 0))
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
+	if (((y1 > y2 && x1 < x2) || (y1 < y2 && x1 > x2)) && (dx != 0 && dy != 0))
 	{
 		puts("PASSER");
 		dsc_ln(mlx_ut, x1, y1, x2, y2);
@@ -80,38 +83,54 @@ void	asc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 
 	dx = x2 - x1;
 	dy = y2 - y1;
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
 	a = (double)dy / (double)dx;
 	b = y1 - (a * x1);
 	if (dy > dx)
 	{
 		x_y = x1;
-		while (y1 <= y2)
+		if (y1 <= y2)
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
-			x_y = ((y1 - b) / a) + 0.5;
-			y1++;
+			while (y1 <= y2)
+			{
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
+				x_y = ((y1 - b) / a) + 0.5;
+				y1++;
+			}
 		}
-		while (y1 >= y2)
+		else
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
-			x_y = ((y1 - b) / a) + 0.5;
-			y1--;
+			while (y1 >= y2)
+			{
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
+				x_y = ((y1 - b) / a) + 0.5;
+				y1--;
+			}
 		}
 	}
 	else
 	{
 		x_y = y1;
-		while (x1 <= x2)
+		if (x1 <= x2)
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
-			x_y = ((a * x1) + b) + 0.5;
-			x1++;
+			while (x1 <= x2)
+			{
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
+				x_y = ((a * x1) + b) + 0.5;
+				x1++;
+			}
 		}
-		while (x1 >= x2)
+		else
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
-			x_y = ((a * x1) + b) + 0.5;
-			x1--;
+			while (x1 >= x2)
+			{
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
+				x_y = ((a * x1) + b) + 0.5;
+				x1--;
+			}
 		}
 	}
 }
@@ -126,38 +145,60 @@ void	dsc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 
 	dx = x2 - x1;
 	dy = y2 - y1;
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
 	a = (double)dy / (double)dx;
 	b = y1 - (a * x1);
+
 	if (dy > dx)
 	{
+
 		x_y = x1;
-		while (y1 >= y2)
+		if (y1 >= y2)
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
-			x_y = ((y1 - b) / a) + 0.5;
-			y1--;
+			while (y1 >= y2)
+			{
+				printf("x : %d y: %d\n",(int)x_y, y1);
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
+				x_y = x1 + (x1 - ((y1 - b) / a) + 1.0);
+				y1--;
+			}
 		}
-		while (y1 <= y2)
+		else 
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
-			x_y = ((y1 - b) / a) + 0.5;
-			y1++;
+			while (y1 <= y2)
+			{
+				printf("x : %d y: %d\n",(int)x_y, y1);
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,0xFFFF0000);
+				x_y = x1 + (x1 - ((y1 - b) / a) - 0.5);
+				y1++;
+			}
 		}
 	}
 	else
 	{
 		x_y = y1;
-		while (x1 >= x2)
+		if (x1 >= x2)
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
-			x_y = ((a * x1) + b) + 0.5;
-			x1--;
+			while (x1 >= x2)
+			{
+				printf("x : %d y: %d\n",x1, (int)x_y);
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
+				x_y = y1 + (y1 - ((a * x1) + b) + 1.0);
+				x1--;
+			}
 		}
-		while (x1 <= x2)
+		else
 		{
-			mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
-			x_y = ((a * x1) + b) + 0.5;
-			x1++;
+			puts("OK");
+			while (x1 <= x2)
+			{
+				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,0xFFFF0000);
+				x_y = y1 + (y1 - ((a * x1) + b) - 0.5);
+				x1++;
+			}
 		}
 	}
 }
