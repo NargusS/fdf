@@ -6,13 +6,13 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 18:02:53 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/15 18:15:08 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/16 00:47:55 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minilibx-linux/mlx.h"
 #include "fdf.h"
-#include <stdio.h>
+
 
 int test(int button, int x, int y, t_utils *mlx_u)
 {
@@ -32,7 +32,7 @@ int test(int button, int x, int y, t_utils *mlx_u)
 	}
 }
 
-int	main()
+/*int	main()
 {
 	t_utils	mlx_utils;
 
@@ -44,4 +44,22 @@ int	main()
 	mlx_mouse_hook(mlx_utils.window, &test, &mlx_utils);
 	mlx_loop(mlx_utils.mlx);
 	return (0);
+}*/
+
+int main()
+{
+	t_lines *lines;
+	int fd;
+
+	fd = open("test.txt", O_RDONLY);
+	lines = 0x0;
+	get_next_line(&lines, fd);
+	while (lines->next != 0x0)
+	{
+		printf("line:%s\n", lines->line);
+		printf("next:%p\n", lines->next);
+		lines = lines->next;
+	}
+	printf("%p\n", lines->next);
+	//printf("%p\n", lines->line);
 }

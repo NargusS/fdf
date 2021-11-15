@@ -6,7 +6,7 @@
 #    By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 18:56:55 by achane-l          #+#    #+#              #
-#    Updated: 2021/11/08 08:31:40 by achane-l         ###   ########.fr        #
+#    Updated: 2021/11/15 23:57:41 by achane-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,9 @@ NAME =	test
 
 MINILIBX_DIR := minilibx-linux/
 NAME_MINILIBX := libmlx.a
-SRCS = main.c\
-		draw_line.c
+SRCS =	main.c\
+		draw_line.c\
+		get_line.c
 
 OBJS := ${SRCS:.c=.o}
 
