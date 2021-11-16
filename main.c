@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 18:02:53 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/16 00:47:55 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/16 23:51:08 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,48 @@ int test(int button, int x, int y, t_utils *mlx_u)
 	return (0);
 }*/
 
+static int	get_height(char *file_path)
+{
+	char	*line;
+	int		fd;
+	int		height;
+	int		ret;
+
+
+	fd = open(file_path, O_RDONLY);
+	height = 0;
+	ret = 1;
+	while (ret > 0)
+	{
+		ret = get_next_line(fd, &line);
+		if (ret == -1)
+			return (-1);
+		else if (ret > 0 || (ret == 0 && line && line[0] != 0))
+			height++;
+		free(line);
+	}
+	return (height);
+}
+
 int main()
 {
-	t_lines *lines;
 	int fd;
+	// char **tab;
+	// char *test;
+	// int i;
 
-	fd = open("test.txt", O_RDONLY);
-	lines = 0x0;
-	get_next_line(&lines, fd);
-	while (lines->next != 0x0)
-	{
-		printf("line:%s\n", lines->line);
-		printf("next:%p\n", lines->next);
-		lines = lines->next;
-	}
-	printf("%p\n", lines->next);
-	//printf("%p\n", lines->line);
+	// test = "test de la fonction";
+	// tab = ft_split(test);
+	// i = 0;
+	// while (tab[i])
+	// {
+	// 	printf("%s\n", tab[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// while (tab[i])
+	// 	free(tab[i++]);
+	// free(tab);
+	printf("%d\n", get_height("maps/test_maps/julia.fdf"));
+
 }

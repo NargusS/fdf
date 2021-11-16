@@ -6,7 +6,7 @@
 #    By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 18:56:55 by achane-l          #+#    #+#              #
-#    Updated: 2021/11/15 23:57:41 by achane-l         ###   ########.fr        #
+#    Updated: 2021/11/16 20:32:36 by achane-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ MINILIBX_DIR := minilibx-linux/
 NAME_MINILIBX := libmlx.a
 SRCS =	main.c\
 		draw_line.c\
-		get_line.c
+		get_next_line/get_next_line.c\
+		get_next_line/get_next_line_utils.c\
 
 OBJS := ${SRCS:.c=.o}
 
