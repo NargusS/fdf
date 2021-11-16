@@ -1,4 +1,0 @@
-Add Value
-
-get_line -> split -> malloc for each line [x]
-in the split add number z
