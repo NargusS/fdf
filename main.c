@@ -6,31 +6,32 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 18:02:53 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/16 23:51:08 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/17 20:39:01 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minilibx-linux/mlx.h"
+// #include "minilibx-linux/mlx.h"
 #include "fdf.h"
 
 
-int test(int button, int x, int y, t_utils *mlx_u)
-{
-	write(1, "CLICK\n", 6);
-	if (mlx_u->count == 0)
-	{
-		mlx_u->x1 = x;
-		mlx_u->y1 = y;
-		mlx_u->count++;
-	}
-	else if (mlx_u->count == 1)
-	{
-		mlx_u->x2 = x;
-		mlx_u->y2 = y;
-		mlx_u->count = 0;
-		drw_ln(mlx_u,mlx_u->x1,mlx_u->y1, mlx_u->x2,mlx_u->y2);
-	}
-}
+// static int test(int button, int x, int y, t_utils *mlx_u)
+// {
+// 	write(1, "CLICK\n", 6);
+// 	if (mlx_u->count == 0)
+// 	{
+// 		mlx_u->x1 = x;
+// 		mlx_u->y1 = y;
+// 		mlx_u->count++;
+// 	}
+// 	else if (mlx_u->count == 1)
+// 	{
+// 		mlx_u->x2 = x;
+// 		mlx_u->y2 = y;
+// 		mlx_u->count = 0;
+// 		drw_ln(mlx_u,mlx_u->x1,mlx_u->y1, mlx_u->x2,mlx_u->y2);
+// 	}
+// 	return 0;
+// }
 
 /*int	main()
 {
@@ -46,48 +47,15 @@ int test(int button, int x, int y, t_utils *mlx_u)
 	return (0);
 }*/
 
-static int	get_height(char *file_path)
-{
-	char	*line;
-	int		fd;
-	int		height;
-	int		ret;
-
-
-	fd = open(file_path, O_RDONLY);
-	height = 0;
-	ret = 1;
-	while (ret > 0)
-	{
-		ret = get_next_line(fd, &line);
-		if (ret == -1)
-			return (-1);
-		else if (ret > 0 || (ret == 0 && line && line[0] != 0))
-			height++;
-		free(line);
-	}
-	return (height);
-}
-
 int main()
 {
-	int fd;
-	// char **tab;
-	// char *test;
-	// int i;
+	t_utils mlx_utils;
+	t_point **test;
 
-	// test = "test de la fonction";
-	// tab = ft_split(test);
-	// i = 0;
-	// while (tab[i])
-	// {
-	// 	printf("%s\n", tab[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// while (tab[i])
-	// 	free(tab[i++]);
-	// free(tab);
-	printf("%d\n", get_height("maps/test_maps/julia.fdf"));
-
+	// mlx_utils.mlx = mlx_init();
+	// mlx_utils.window = mlx_new_window(mlx_utils.mlx, 1000, 1000, "test");
+	test = read_map("maps/test_maps/pyramide.fdf", &mlx_utils);
+	printf("%d", test[17][11].z);
+	// mlx_loop(mlx_utils.mlx);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 08:01:04 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/16 18:25:18 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/17 19:11:10 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "get_next_line/get_next_line.h"
-
+#include "minilibx-linux/mlx.h"
 typedef struct  s_point
 {
     int     x;
     int     y;
     int     z;
     float   angle;
+    int     color;
 }               t_point;
 
 typedef struct  s_utils
 {
     void    *mlx;
     void    *window;
-    int     count;
     int     height;
-    int     x1;
-    int     y1;
-    int     x2;
-    int     y2;
+    int     width;
 }               t_utils;
 
+char	**ft_split(char *line);
+t_point	**read_map(char *file_path, t_utils *mlx_utils);
+void	free_tab_str(char ***tab_str, int i);
 void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2);
 void	asc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2);
 void	dsc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2);

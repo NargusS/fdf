@@ -6,80 +6,11 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:53:29 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/17 00:29:00 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/17 20:35:36 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static int	count_words(char *line)
-{
-	int	nb_words;
-	int	i;
-
-	i = 0;
-	nb_words = 0;
-	while (line && line[i])
-	{
-		if (i > 0 && line[i] == ' ' && line[i - 1] != ' ')
-			nb_words++;
-		i++;
-	}
-	if (line && i > 0 && line[i] == 0 && line[i - 1] != ' ')
-		nb_words++;
-	return (nb_words);
-}
-
-static void	str_append(char **str, char carac)
-{
-	char	*new_str;
-	int		len;
-
-	len = ft_strlen(*str);
-	new_str = malloc(len + 2);
-	if (new_str == NULL)
-		return ;
-	new_str[len + 1] = 0;
-	new_str[len] = carac;
-	while (*str && len > 0)
-	{
-		new_str[len - 1] = (*str)[len - 1];
-		len--;
-	}
-	if (*str)
-	{
-		free(*str);
-		*str = NULL;
-	}
-	*str = new_str;
-}
-
-static char	**ft_split(char *line)
-{
-	char	**tab_str;
-	int		nb_words;
-	int		i;
-
-	nb_words = count_words(line);
-	i = 0;
-	tab_str = (char **)malloc(sizeof(char *) * (nb_words + 1));
-	if (tab_str == NULL)
-		return (NULL);
-	while (nb_words + 1 > 0)
-		tab_str[nb_words--] = NULL;
-	while (line && *line)
-	{
-		if (*line != ' ')
-			str_append(&tab_str[i], *line);
-		else if (*line == ' ' && tab_str[i] != NULL)
-			i++;
-		line++;
-	}
-	if (line && *line == 0 && tab_str[i] != NULL)
-		i++;
-	tab_str[i] = NULL;
-	return (tab_str);
-}
 
 static int	get_height(char *file_path)
 {
@@ -123,36 +54,125 @@ static int	get_width(char **tab_str)
 	return (-1);
 }
 
-void	add_value(char *file_path, t_point **points, t_utils *mlx_u)
+// static t_point	**add_value(char *file_path, t_point **points, t_utils *mlx_u)
+// {
+// 	int		fd;
+// 	int		i;
+// 	char	*line;
+// 	char	**tab_str;
+// 	int		j;
+
+// 	fd = open(file_path, O_RDONLY);
+// 	if (fd < 0)
+// 		return (NULL);
+// 	i = 0;
+// 	while (i < mlx_u->height)
+// 	{
+// 		get_next_line(fd, &line);
+// 		// tab_str = ft_split(line);
+// 		// points[i] = malloc(sizeof(t_point) * get_width(tab_str));
+// 		// if (points[i] == NULL)
+// 		// {
+// 		// 	free_tab_str(&tab_str, -1);
+// 		// 	while (i > 0)
+// 		// 	{
+// 		// 		free(points[i-1]);
+// 		// 		i--;
+// 		// 	}
+// 		// 	return (NULL);
+// 		// }
+// 		j = 0;
+// 		while (j < get_width(tab_str))
+// 		{
+// 			// printf("%p\n", points[i][j]);
+// 			points[i][j].x = j;
+// 			points[i][j].y = i;
+// 			points[i][j].z = atoi(tab_str[j]);
+// 			// if (ft_strchr(tab_str[j], ','))
+// 			// 	points[i][j].color = 
+// 			j++;
+// 		}
+// 		free_tab_str(&tab_str, -1);
+// 		i++;
+// 	}
+// 	return (points);
+// }
+
+static int	parse_value(t_point **my_point, int y, char *line)
+{
+	int		x;
+	int		width;
+	char	**tab_str;
+
+	tab_str = ft_split(line);
+	if (tab_str == NULL)
+		return (-1);
+	width = get_width(tab_str);
+	(*my_point) = malloc(sizeof(t_point) * width);
+	if (*my_point == NULL)
+	{
+		free_tab_str(&tab_str, -1);
+		return (-1);
+	}
+	x = 0;
+	while (x < width)
+	{
+		(*my_point)[x].x = x;
+		(*my_point)[x].y = y;
+		(*my_point)[x].z = atoi(tab_str[x]);
+		x++;
+	}
+	free_tab_str(&tab_str, -1);
+	return (0);
+}
+
+static	void	add_value(char *file_path, t_point **points, t_utils *mlx_u)
 {
 	int		fd;
-	int		i;
+	int		y;
 	char	*line;
 
 	fd = open(file_path, O_RDONLY);
 	if (fd < 0)
-		return;
-	i = 0;
-	while (i < mlx_u->height)
+		return ;
+	y = 0;
+	while (y < mlx_u->height)
 	{
-		
+		get_next_line(fd, &line);
+		if (parse_value(&points[y], y, line) == -1)
+		{
+			if (line)
+				free(line);
+			while (y >= 0)
+			{
+				if (points[y])
+					free(points[y]);
+				y--;
+			}
+			return ;
+		}
+		y++;
+		free(line);
 	}
+	return ;
 }
 
-void	read_map(char *file_path, t_utils *mlx_utils)
+t_point	**read_map(char *file_path, t_utils *mlx_utils)
 {
-	t_point **points;
+	t_point	**points;
 
 	if (open(file_path, O_DIRECTORY) > 0)
-		return;
+		return (NULL);
 	mlx_utils->height = get_height(file_path);
 	if (mlx_utils->height <= 0)
-		return;
+		return (NULL);
 	else
 	{
-		points = malloc(sizeof(t_point *) * (mlx_utils->height));
+		points = malloc(sizeof(t_point **) * (mlx_utils->height));
 		if (points == NULL)
-			return;
+			return (NULL);
 		add_value(file_path, points, mlx_utils);
+		return (points);
 	}
+	return (NULL);
 }
