@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:53:29 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/17 20:35:36 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/18 19:17:46 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,50 +54,6 @@ static int	get_width(char **tab_str)
 	return (-1);
 }
 
-// static t_point	**add_value(char *file_path, t_point **points, t_utils *mlx_u)
-// {
-// 	int		fd;
-// 	int		i;
-// 	char	*line;
-// 	char	**tab_str;
-// 	int		j;
-
-// 	fd = open(file_path, O_RDONLY);
-// 	if (fd < 0)
-// 		return (NULL);
-// 	i = 0;
-// 	while (i < mlx_u->height)
-// 	{
-// 		get_next_line(fd, &line);
-// 		// tab_str = ft_split(line);
-// 		// points[i] = malloc(sizeof(t_point) * get_width(tab_str));
-// 		// if (points[i] == NULL)
-// 		// {
-// 		// 	free_tab_str(&tab_str, -1);
-// 		// 	while (i > 0)
-// 		// 	{
-// 		// 		free(points[i-1]);
-// 		// 		i--;
-// 		// 	}
-// 		// 	return (NULL);
-// 		// }
-// 		j = 0;
-// 		while (j < get_width(tab_str))
-// 		{
-// 			// printf("%p\n", points[i][j]);
-// 			points[i][j].x = j;
-// 			points[i][j].y = i;
-// 			points[i][j].z = atoi(tab_str[j]);
-// 			// if (ft_strchr(tab_str[j], ','))
-// 			// 	points[i][j].color = 
-// 			j++;
-// 		}
-// 		free_tab_str(&tab_str, -1);
-// 		i++;
-// 	}
-// 	return (points);
-// }
-
 static int	parse_value(t_point **my_point, int y, char *line)
 {
 	int		x;
@@ -126,7 +82,7 @@ static int	parse_value(t_point **my_point, int y, char *line)
 	return (0);
 }
 
-static	void	add_value(char *file_path, t_point **points, t_utils *mlx_u)
+static int	add_value(char *file_path, t_point **points, t_utils *mlx_u)
 {
 	int		fd;
 	int		y;
@@ -134,32 +90,28 @@ static	void	add_value(char *file_path, t_point **points, t_utils *mlx_u)
 
 	fd = open(file_path, O_RDONLY);
 	if (fd < 0)
-		return ;
+		return (-1);
 	y = 0;
 	while (y < mlx_u->height)
 	{
 		get_next_line(fd, &line);
-		if (parse_value(&points[y], y, line) == -1)
+		points[y] = NULL;
+		if (parse_value(&(points[y]), y, line) == -1)
 		{
 			if (line)
 				free(line);
-			while (y >= 0)
-			{
-				if (points[y])
-					free(points[y]);
-				y--;
-			}
-			return ;
+			return (-1);
 		}
-		y++;
 		free(line);
+		y++;
 	}
-	return ;
+	return (0);
 }
 
 t_point	**read_map(char *file_path, t_utils *mlx_utils)
 {
 	t_point	**points;
+	int		i;
 
 	if (open(file_path, O_DIRECTORY) > 0)
 		return (NULL);
@@ -168,10 +120,17 @@ t_point	**read_map(char *file_path, t_utils *mlx_utils)
 		return (NULL);
 	else
 	{
-		points = malloc(sizeof(t_point **) * (mlx_utils->height));
+		points = malloc(sizeof(t_point *) * (mlx_utils->height));
 		if (points == NULL)
 			return (NULL);
-		add_value(file_path, points, mlx_utils);
+		i = 0;
+		while (i < mlx_utils->height)
+			points[i++] = NULL;
+		if (add_value(file_path, points, mlx_utils) == -1)
+		{
+			free_points(&points, mlx_utils->height);
+			return (NULL);
+		}
 		return (points);
 	}
 	return (NULL);
