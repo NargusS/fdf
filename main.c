@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 18:02:53 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/22 00:36:56 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/22 14:45:31 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,12 @@ int main()
 	t_point **test;
 	char **tab_str;
 
-	// mlx_utils.mlx = mlx_init();
-	// mlx_utils.window = mlx_new_window(mlx_utils.mlx, 1000, 1000, "test");
-	// test = read_map("maps/test_maps/pyramide.fdf", &mlx_utils);
-	// if (test)
-	// 	printf("%d\n", test[17][11].z);
-	// else
-	// 	printf("%p\n", test);dee
-	// free_points(&test, mlx_utils.height);
-	// mlx_loop(mlx_utils.mlx);
-	tab_str = ft_split("test de la mort");
-	int i = 0;
-	while (tab_str!=NULL && tab_str[i])
-		printf("%s\n", tab_str[i++]);
-	if (tab_str)
-		free_tab_str(&tab_str, -1);
-	// int i=0;
-	// if (tab_str)
-	// {
-	// 	while (tab_str[i])
-	// 	{
-	// 		printf("%s\n", tab_str[i]);
-	// 		i++;
-	// 	}
-	// 	free_tab_str(&tab_str, -1);
-	// 	//free(tab_str);
-	// }
+	mlx_utils.mlx = mlx_init();
+	mlx_utils.window = mlx_new_window(mlx_utils.mlx, 1000, 1000, "test");
+	test = read_map("maps/test_maps/10-2.fdf", &mlx_utils);
+
+	print_map(&mlx_utils, test);
+	mlx_loop(mlx_utils.mlx);
+	free_points(&test, mlx_utils.height);
 	return (0);
 }

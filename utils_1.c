@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:33:32 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/22 00:36:46 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/22 10:47:05 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ static int	str_append(char **str, char carac)
 	char	*new_str;
 	int		len;
 
-	if (carac == 'm')
-		return(-1);
 	len = (int)ft_strlen(*str);
 	new_str = malloc(len + 2);
 	if (new_str == NULL)
@@ -51,6 +49,7 @@ static int	str_append(char **str, char carac)
 	if (*str)
 		free(*str);
 	*str = new_str;
+	return (0);
 }
 
 char	**ft_split(char *line)
@@ -119,20 +118,4 @@ void	free_tab_str(char ***tab_str, int i)
 	}
 	if (*tab_str)
 		free((*tab_str));
-}
-
-void	free_points(t_point ***points, int height)
-{
-	int	i;
-
-	i = 0;
-	while (i < height)
-	{
-		if ((*points)[i])
-			free((*points)[i++]);
-		else
-			i++;
-	}
-	if ((*points))
-		free((*points));
 }

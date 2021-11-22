@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 07:59:39 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/15 16:47:54 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/22 11:15:18 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 		dy = -dy;
 	if (((y1 > y2 && x1 < x2) || (y1 < y2 && x1 > x2)) && (dx != 0 && dy != 0))
 	{
-		puts("PASSER");
 		dsc_ln(mlx_ut, x1, y1, x2, y2);
 	}
 	else if (dx == 0 || dy == 0)
@@ -161,7 +160,6 @@ void	dsc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 		{
 			while (y1 >= y2)
 			{
-				printf("x : %d y: %d\n",(int)x_y, y1);
 				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,BLUE);
 				x_y = x1 + (x1 - ((y1 - b) / a) + 1.0);
 				y1--;
@@ -171,7 +169,6 @@ void	dsc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 		{
 			while (y1 <= y2)
 			{
-				printf("x : %d y: %d\n",(int)x_y, y1);
 				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, (int)x_y, y1,BLUE);
 				x_y = x1 + (x1 - ((y1 - b) / a) - 0.5);
 				y1++;
@@ -185,7 +182,6 @@ void	dsc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 		{
 			while (x1 >= x2)
 			{
-				printf("x : %d y: %d\n",x1, (int)x_y);
 				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,BLUE);
 				x_y = y1 + (y1 - ((a * x1) + b) + 1.0);
 				x1--;
@@ -193,7 +189,6 @@ void	dsc_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
 		}
 		else
 		{
-			puts("OK");
 			while (x1 <= x2)
 			{
 				mlx_pixel_put(mlx_ut->mlx, mlx_ut->window, x1, (int)x_y,BLUE);

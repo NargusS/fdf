@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:53:29 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/18 19:17:46 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/22 13:43:14 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ static int	parse_value(t_point **my_point, int y, char *line)
 		(*my_point)[x].x = x;
 		(*my_point)[x].y = y;
 		(*my_point)[x].z = atoi(tab_str[x]);
+		if (x == width - 1)
+			(*my_point)[x].is_end = 1;
+		else
+			(*my_point)[x].is_end = 0;
+		(*my_point)[x].angle = 0.8;
 		x++;
 	}
 	free_tab_str(&tab_str, -1);

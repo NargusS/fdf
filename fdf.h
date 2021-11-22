@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 08:01:04 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/22 00:21:23 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/22 14:28:25 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <math.h>
 #include "get_next_line/get_next_line.h"
 #include "minilibx-linux/mlx.h"
 typedef struct  s_point
@@ -24,6 +25,7 @@ typedef struct  s_point
     int     z;
     float   angle;
     int     color;
+	int		is_end;
 }               t_point;
 
 typedef struct  s_utils
@@ -35,6 +37,8 @@ typedef struct  s_utils
 }               t_utils;
 
 char	**ft_split(char *line);
+void	isometric_projection(t_point **points, t_utils *mlx_utils);
+void	print_map(t_utils *mlx_utils, t_point **points);
 t_point	**read_map(char *file_path, t_utils *mlx_utils);
 void	init_tab(char ***tab_str, int tab_size);
 void	free_tab_str(char ***tab_str, int i);
