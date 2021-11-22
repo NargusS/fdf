@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 07:59:39 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/22 11:15:18 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/23 00:08:17 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,26 @@
 #define BLUE 0xFF07ACFF
 #include <stdio.h>
 
-void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2)
+void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2, t_point **pts)
 {
 	int	dx;
 	int dy;
+	int z;
+	int z1;
 
+	z = pts[y1][x1].z;
+	z1 = pts[y2][x2].z;
+
+	x1 *= mlx_ut->zoom;
+	y1 *= mlx_ut->zoom;
+	x2 *= mlx_ut->zoom;
+	y2 *= mlx_ut->zoom;
+	isometric_projection(&x1, &y1, z);
+	isometric_projection(&x2, &y2, z1);
+	x1 += 150;
+	y1 += 150;
+	x2 += 150;
+	y2 += 150;
 	dx = x2 - x1;
 	dy = y2 - y1;
 	if (dx < 0)

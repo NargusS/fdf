@@ -6,80 +6,37 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:06:37 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/22 15:17:20 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/22 20:22:48 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	isometric_projection(t_point **points, t_utils *mlx_utils)
+void	isometric_projection(int *x, int *y, int z)
 {
-	int y;
-	int x;
-
-	y = 0;
-	while (y < mlx_utils->height)
-	{
-		x = 0;
-		while (points[y][x].is_end != 1)
-		{
-			points[y][x].x = (points[y][x].x - points[y][x].y) * cos(0.8);
-			points[y][x].y = (points[y][x].x + points[y][x].y) * (sin(0.8) - points[y][x].z);
-			x++;
-		}
-		y++;
-	}
+	*x = (*x - *y) * cos(0.523599);
+	*y = (*x + *y) * sin(0.523599) - z;
 }
 
-void	print_map(t_utils *mlx_utils, t_point **points)
+void	print_map(t_utils *m_u, t_point **pts)
 {
-	int	x1;
-	int	y1;
 	int x;
 	int	y;
-	int	x_next;
-	int	y_next;
 
 	y = 0;
-	x1 = 0;
-	y1 = 0;
-	x_next = 0;
-	y_next = 0;
-	while (y < mlx_utils->height - 1)
+	while (y < m_u->height)
 	{
 		x = 0;
-		x1 = 0;
-		if (y1 == 0)
-			y1 = points[y][x].y;
-		while (points[y][x].is_end != 1)
+		while (pts[y][x].is_end != 1)
 		{
-			if (x1 == 0)
-				x1 = points[y][x].x;
-			x_next = x1 + 0;
-			y_next = y1 + 0;
-			drw_ln(mlx_utils, x1, y1, x_next, y1);
-			drw_ln(mlx_utils, x1, y1, x1, y_next);
-			x1 = x_next;
+			if (pts[y][x].is_end != 1)
+				drw_ln(m_u, pts[y][x].x, pts[y][x].y, pts[y][x + 1].x, pts[y][x + 1].y, pts);
+			if (y < m_u->height - 1)
+				drw_ln(m_u, pts[y][x].x, pts[y][x].y, pts[y + 1][x].x, pts[y + 1][x].y, pts);
 			x++;
 		}
-		if (points[y][x].is_end == 1)
-			drw_ln(mlx_utils, x1, y1, x1, y_next);
-		y1 = y_next;
+		if (pts[y][x].is_end == 1 && y < m_u->height - 1)
+			drw_ln(m_u, pts[y][x].x, pts[y][x].y, pts[y + 1][x].x, pts[y + 1][x].y, pts);
 		y++;
 	}
-	if (y == mlx_utils->height - 1)
-	{
-		x = 0;
-		x1 = 0;
-		while (points[y][x].is_end != 1)
-		{
-			if (x1 == 0)
-				x1 = points[y][x].x;
-			x_next = x1 + 0;
-			drw_ln(mlx_utils, x1, y1, x_next, y1);
-			x1 = x_next;
-			x++;
-		}
-	}
-		
 }
