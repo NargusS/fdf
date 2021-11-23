@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 07:59:39 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/23 00:08:17 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/23 20:35:54 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2, t_point **pts)
 	y1 *= mlx_ut->zoom;
 	x2 *= mlx_ut->zoom;
 	y2 *= mlx_ut->zoom;
-	isometric_projection(&x1, &y1, z);
-	isometric_projection(&x2, &y2, z1);
-	x1 += 150;
-	y1 += 150;
-	x2 += 150;
-	y2 += 150;
+	isometric_projection(mlx_ut->angle, &x1, &y1, z * mlx_ut->coef_z);
+	isometric_projection(mlx_ut->angle, &x2, &y2, z1 * mlx_ut->coef_z);
+	x1 += mlx_ut->scale_x;
+	y1 += mlx_ut->scale_y;
+	x2 += mlx_ut->scale_x;
+	y2 += mlx_ut->scale_y;
 	dx = x2 - x1;
 	dy = y2 - y1;
 	if (dx < 0)
@@ -42,13 +42,9 @@ void	drw_ln(t_utils *mlx_ut, int x1, int y1, int x2, int y2, t_point **pts)
 	if (dy < 0)
 		dy = -dy;
 	if (((y1 > y2 && x1 < x2) || (y1 < y2 && x1 > x2)) && (dx != 0 && dy != 0))
-	{
 		dsc_ln(mlx_ut, x1, y1, x2, y2);
-	}
 	else if (dx == 0 || dy == 0)
-	{
 		cst_ln(mlx_ut, x1, y1, x2, y2);
-	}
 	else
 		asc_ln(mlx_ut, x1, y1, x2, y2);
 }

@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 08:01:04 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/22 20:19:30 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/11/23 20:28:02 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,28 @@
 #include "minilibx-linux/mlx.h"
 typedef struct  s_point
 {
-    int     x;
-    int     y;
-    int     z;
-    float   angle;
-    int     color;
+	int     x;
+	int     y;
+	int     z;
+	int     color;
 	int		is_end;
 }               t_point;
 
 typedef struct  s_utils
 {
-    void    *mlx;
-    void    *window;
-    int     height;
-    int     width;
-    int     zoom;
+	void    *mlx;
+	void    *window;
+	int     height;
+	int     width;
+	int     zoom;
+	int     scale_x;
+	int     scale_y;
+	int		coef_z;
+	double  angle;
 }               t_utils;
 
 char	**ft_split(char *line);
-void	isometric_projection(int *x, int *y, int z);
+void	isometric_projection(double angle, int *x, int *y, int z);
 void	print_map(t_utils *mlx_utils, t_point **points);
 t_point	**read_map(char *file_path, t_utils *mlx_utils);
 void	init_tab(char ***tab_str, int tab_size);
