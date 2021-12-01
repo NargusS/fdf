@@ -6,7 +6,7 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:53:29 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/23 20:47:20 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/12/01 20:27:53 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ static int	get_width(char **tab_str)
 	return (-1);
 }
 
+static int	get_my_color(char *values)
+{
+	int i;
+
+	i = 0;
+	while (values && values[i])
+	{
+		if (values[i] == ',')
+			return (atoi_base(values + i + 3, "0123456789ABCDEF"));
+		i++;
+	}
+	return (WHITE);
+}
+
 static int	parse_value(t_point **my_point, int y, char *line)
 {
 	int		x;
@@ -75,7 +89,8 @@ static int	parse_value(t_point **my_point, int y, char *line)
 	{
 		(*my_point)[x].x = x;
 		(*my_point)[x].y = y;
-		(*my_point)[x].z = atoi(tab_str[x]);
+		(*my_point)[x].z = atoi_base(tab_str[x], "0123456789");
+		(*my_point)[x].color = get_my_color(tab_str[x]);
 		if (x == width - 1)
 			(*my_point)[x].is_end = 1;
 		else

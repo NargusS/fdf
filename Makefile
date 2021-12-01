@@ -6,7 +6,7 @@
 #    By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/02 18:56:55 by achane-l          #+#    #+#              #
-#    Updated: 2021/11/22 11:24:24 by achane-l         ###   ########.fr        #
+#    Updated: 2021/11/30 11:34:52 by achane-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,13 @@ NAME =	fdf
 MINILIBX_DIR := minilibx-linux/
 NAME_MINILIBX := libmlx.a
 SRCS =	main.c\
-		draw_line.c\
-		utils_1.c\
-		utils_2.c\
-		read_maps.c\
+		config_view.c\
 		print_map.c\
+		read_maps.c\
+		utils_all.c\
+		utils_line.c\
+		utils_read.c\
+		init.c\
 		get_next_line/get_next_line_utils.c\
 		get_next_line/get_next_line.c
 OBJS := ${SRCS:.c=.o}
