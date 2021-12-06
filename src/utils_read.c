@@ -6,11 +6,11 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:33:32 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/29 18:44:15 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/12/06 19:23:05 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 static int	count_words(char *line)
 {
@@ -79,43 +79,4 @@ char	**ft_split(char *line)
 		line++;
 	}
 	return (tab_str);
-}
-
-void	init_tab(char ***tab_str, int tab_size)
-{
-	int	i;
-
-	i = 0;
-	while (i < tab_size)
-	{
-		(*tab_str)[i] = NULL;
-		i++;
-	}
-}
-
-void	free_tab_str(char ***tab_str, int i)
-{
-	if (i < 0)
-	{
-		i = 0;
-		while ((*tab_str)[i])
-		{
-			if ((*tab_str)[i])
-				free((*tab_str)[i++]);
-			else
-				i++;
-		}
-	}
-	else
-	{
-		while (i >= 0)
-		{
-			if ((*tab_str)[i])
-				free((*tab_str)[i--]);
-			else
-				i--;
-		}
-	}
-	if (*tab_str)
-		free((*tab_str));
 }

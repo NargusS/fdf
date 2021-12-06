@@ -6,11 +6,11 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:53:29 by achane-l          #+#    #+#             */
-/*   Updated: 2021/12/01 20:27:53 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/12/06 19:22:49 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 static int	get_height(char *file_path)
 {
@@ -54,49 +54,31 @@ static int	get_width(char **tab_str)
 	return (-1);
 }
 
-static int	get_my_color(char *values)
-{
-	int i;
-
-	i = 0;
-	while (values && values[i])
-	{
-		if (values[i] == ',')
-			return (atoi_base(values + i + 3, "0123456789ABCDEF"));
-		i++;
-	}
-	return (WHITE);
-}
-
 static int	parse_value(t_point **my_point, int y, char *line)
 {
 	int		x;
-	int		width;
 	char	**tab_str;
 
 	tab_str = ft_split(line);
 	if (tab_str == NULL)
 		return (-1);
-	width = get_width(tab_str);
-	(*my_point) = malloc(sizeof(t_point) * width);
+	(*my_point) = malloc(sizeof(t_point) * get_width(tab_str));
 	if (*my_point == NULL)
 	{
 		free_tab_str(&tab_str, -1);
 		return (-1);
 	}
 	x = 0;
-	while (x < width)
+	while (tab_str[x])
 	{
 		(*my_point)[x].x = x;
 		(*my_point)[x].y = y;
 		(*my_point)[x].z = atoi_base(tab_str[x], "0123456789");
 		(*my_point)[x].color = get_my_color(tab_str[x]);
-		if (x == width - 1)
-			(*my_point)[x].is_end = 1;
-		else
-			(*my_point)[x].is_end = 0;
+		(*my_point)[x].is_end = 0;
 		x++;
 	}
+	(*my_point)[x - 1].is_end = 1;
 	free_tab_str(&tab_str, -1);
 	return (0);
 }

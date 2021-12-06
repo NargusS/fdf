@@ -6,22 +6,20 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 08:01:04 by achane-l          #+#    #+#             */
-/*   Updated: 2021/12/01 19:58:07 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/12/06 19:25:46 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
-#include <stdio.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <math.h>
-#include "get_next_line/get_next_line.h"
-#include "minilibx-linux/mlx.h"
+#include "../get_next_line/get_next_line.h"
+#include "../minilibx-linux/mlx.h"
 # define HEIGHT 1000
 # define WIDTH 1000
-#define BLUE 0xFF07ACFF
-#define WHITE 16777215
+# define DEFAULT 0xFF000000
 
 typedef struct  s_point
 {
@@ -41,12 +39,20 @@ typedef struct	s_img_data
 	int		endian;
 }				t_img_data;
 
+typedef	struct	s_color
+{
+	struct s_color	*prev;
+	int	color;
+	struct s_color	*next;
+}				t_color;
+
 typedef struct  s_utils
 {
 	void    	*mlx;
 	void    	*window;
 	t_img_data	img;
 	t_point		**points;
+	t_color	*color_grad;
 	int     	height;
 	int     	width;
 	int     	zoom;
@@ -56,6 +62,7 @@ typedef struct  s_utils
 	double  	angle_x;
 	double		angle_y;
 }               t_utils;
+
 
 typedef struct	s_bresenham
 {
@@ -79,7 +86,9 @@ void	bresenham_init(t_utils *mlx_ut, t_bresenham *values, t_point start, t_point
 void	fdf_init(t_utils *mlx_utils);
 
 // Algorithm for trace line
-void	ln_no_bre(t_utils *mlx_ut, t_bresenham *value);
+int	choose_line_tp(t_utils *mlx_ut, t_bresenham *value);
+void	ln_no_bre_x(t_utils *mlx_ut, t_bresenham *value);
+void	ln_no_bre_y(t_utils *mlx_ut, t_bresenham *value);
 void	bresenham_x(t_utils *mlx_ut, t_bresenham *value);
 void	bresenham_y(t_utils *mlx_ut, t_bresenham *value);
 void	bresenham_x_dsc(t_utils *mlx_ut, t_bresenham *value);
@@ -95,11 +104,14 @@ void	isometric_projection(t_utils *mlx_ut, int *x, int *y, int z);
 
 //print map
 void	print_map(t_utils *mlx_utils, t_point **points);
-void	drw_ln(t_utils *mlx_ut, t_bresenham *values);
+void	drw_ln(t_utils *mlx_ut, t_point start, t_point end);
 void	render(t_utils *mlx);
 
 //read map
 t_point	**read_map(char *file_path, t_utils *mlx_utils);
+
+// utils pixel
+void	my_clear_img(t_img_data *img);
 
 //utils all
 void	free_points(t_point ***points, int height);
@@ -113,6 +125,28 @@ char	**ft_split(char *line);
 void	init_tab(char ***tab_str, int tab_size);
 void	free_tab_str(char ***tab_str, int i);
 
+//
+int	get_width_line(t_point *pts);
+int	abs_value(int value);
 int	atoi_base(char *str, char *base);
 int	get_value_base(char *base, char elem);
+int	check_valid_map(int height, t_point **points);
+
+//linked list
+int	new_element(int num, t_color **elem, t_color *prev, t_color *next);
+void	modify_element(t_color **elem, t_color *prev, t_color *next);
+int	add_my_element_to_my_stack(t_color **stacks, int num);
+void	free_my_stack(t_color **my_stack);
+//colors
+t_color	*init_colors(void);
+int choose_color(t_utils *mlx_ut, int color_choose);
+int	get_my_color(char *values);
+//Event
+void	fdf(t_utils *mlx_utils);
+int	get_key(int keycode, t_utils *mlx);
+int	mouse_code(int keycode, int x, int y, t_utils *mlx);
+
+//line 
+
+void	close_all(t_utils *mlx);
 #endif

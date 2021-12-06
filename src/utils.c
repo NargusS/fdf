@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_all.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/22 10:17:50 by achane-l          #+#    #+#             */
-/*   Updated: 2021/12/01 20:28:09 by achane-l         ###   ########.fr       */
+/*   Created: 2021/12/02 19:51:03 by achane-l          #+#    #+#             */
+/*   Updated: 2021/12/06 19:44:05 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
-void	free_points(t_point ***points, int height)
-{
-	int	i;
-
-	i = 0;
-	while (i < height)
-	{
-		if ((*points)[i])
-			free((*points)[i++]);
-		else
-			i++;
-	}
-	if ((*points))
-		free((*points));
-}
-
-int		get_width_line(t_point *pts)
+int	get_width_line(t_point *pts)
 {
 	int	width;
 
@@ -38,30 +22,13 @@ int		get_width_line(t_point *pts)
 	return (width + 1);
 }
 
-void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
-{
-	char	*p_adrr;
-
-	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
-	{
-		p_adrr = data->adrr + \
-		(y * data->line_length + x * (data->bits_per_pixel / 8));
-		*(unsigned int *)p_adrr = (unsigned int)color;
-	}
-}
-
-int	abs_value(int value)
-{
-	if (value < 0)
-		return (-value);
-	return (value);
-}
-
 int	get_value_base(char *base, char elem)
 {
-	int i;
+	int	i;
 
 	i = 0;
+	if (elem >= 'a' && elem <= 'z')
+		elem = elem - 32;
 	while (base && base[i])
 	{
 		if (base[i] == elem)
@@ -71,10 +38,17 @@ int	get_value_base(char *base, char elem)
 	return (-1);
 }
 
+int	abs_value(int value)
+{
+	if (value < 0)
+		return (-value);
+	return (value);
+}
+
 int	atoi_base(char *str, char *base)
 {
 	int	num;
-	int value_base;
+	int	value_base;
 
 	num = 0;
 	while (str && *str)
@@ -95,4 +69,24 @@ int	atoi_base(char *str, char *base)
 		return (num);
 	else
 		return (-num);
+}
+
+int	check_valid_map(int height, t_point **points)
+{
+	int	i;
+	int	check_map;
+
+	i = 0;
+	if (height > 1)
+	{
+		check_map = get_width_line(points[i]);
+		while (i < height)
+		{
+			if (check_map != get_width_line(points[i]))
+				return (-1);
+			i++;
+		}
+		return (1);
+	}
+	return (-1);
 }

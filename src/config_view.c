@@ -6,11 +6,11 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 18:05:21 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/30 17:16:01 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/12/06 19:22:08 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 void	isometric_projection(t_utils *mlx_ut, int *x, int *y, int z)
 {

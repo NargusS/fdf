@@ -6,13 +6,13 @@
 /*   By: achane-l <achane-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:34:22 by achane-l          #+#    #+#             */
-/*   Updated: 2021/11/17 17:22:29 by achane-l         ###   ########.fr       */
+/*   Updated: 2021/12/06 17:10:53 by achane-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 4096
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/uio.h>
